@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ucapan Selamat Ulang Tahun</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-image: url("ayam.jpg"); /* Ganti dengan path gambar yang diinginkan */
+            background-size: cover;
+            background-position: center;
+        }
+
+        .container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            position: relative;
+        }
+
+        .box {
+            width: 800px;
+            height: 400px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .box::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: inherit;
+            background-size: cover;
+            background-position: center;
+            filter: blur(10px); /* Sesuaikan nilai blur sesuai kebutuhan */
+            z-index: -1;
+        }
+
+        .gif-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 230px;
+            height: 230px;
+            margin: auto;
+            margin-top: 40px; /* Sesuaikan jarak dari atas sesuai kebutuhan */
+        }
+
+        .message-container {
+            position: absolute;
+            bottom: 50px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 18px; /* Sesuaikan ukuran teks sesuai kebutuhan */
+            font-weight: bold;
+            color: #333;
+            opacity: 0;
+            animation-name: fade;
+            animation-duration: 1s;
+            animation-fill-mode: forwards;
+        }
+
+        .start-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #fff;
+            color: orange;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .start-button-container {
+            margin-top: 20px;
+        }
+
+        @keyframes fade {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="box">
+            <div class="gif-container">
+                <img id="gif" src="path_to_your_gif.gif" alt="Birthday GIF" style="width: 230px; height: 230px;">
+            </div>
+            <div class="message-container">
+                <div id="message"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="start-button-container">
+        <div class="start-button" onclick="startBirthday()">Mulai Ulang</div>
+    </div>
+
+    <audio id="birthday-audio" src="bg.mp3" loop></audio> <!-- Ganti path_to_your_song.mp3 dengan path file lagu Anda -->
+
+    <script>
+        var gifs = [
+            "path_to_your_gif1.gif",
+            "path_to_your_gif2.gif",
+            "path_to_your_gif3.gif"
+        ];
+
+        var messages = [
+            "Selamat ulang tahun! Semoga hari ini penuh dengan kebahagiaan.",
+            "Di hari spesialmu ini, aku berharap semua impianmu menjadi kenyataan. Selamat ulang tahun!",
+            "Ulang tahun yang indah untukmu! Semoga semua keinginanmu tercapai.",
+            "Selamat ulang tahun yang luar biasa! Semoga tahun ini membawa banyak kebahagiaan dan kesuksesan.",
+            "Hari ini adalah hari spesialmu. Nikmati setiap momen dan selamat ulang tahun!"
+        ];
+
+        var gifElement = document.getElementById("gif");
+        var messageElement = document.getElementById("message");
+        var startButtonContainer = document.querySelector(".start-button-container");
+        var audio = document.getElementById("birthday-audio");
+
+        var gifIndex = 0;
+        var messageIndex = 0;
+        var isStarted = false;
+
+        function showMessage() {
+            if (messageIndex === messages.length) {
+                clearInterval(messageInterval);
+                return;
+            }
+
+            var message = messages[messageIndex];
+            messageElement.innerHTML = message;
+            var messageContainer = document.querySelector(".message-container");
+            messageContainer.style.animationName = "none";
+            setTimeout(function() {
+                messageContainer.style.animationName = "fade";
+            }, 100);
+
+            messageIndex++;
+        }
+
+        function showNextGif() {
+            if (gifIndex === gifs.length) {
+                gifIndex = 0;
+            }
+
+            var gifPath = gifs[gifIndex];
+            gifElement.src = gifPath;
+
+            gifIndex++;
+        }
+
+        function startBirthday() {
+            if (!isStarted) {
+                isStarted = true;
+                startButtonContainer.style.display = "none";
+                audio.currentTime = 0;
+                audio.play();
+                showMessage();
+                showNextGif();
+                messageInterval = setInterval(showMessage, 3000);
+                gifInterval = setInterval(showNextGif, 5000);
+            }
+        }
+
+        audio.addEventListener("ended", function() {
+            audio.currentTime = 0;
+            audio.play();
+        });
+    </script>
+</body>
+</html>
